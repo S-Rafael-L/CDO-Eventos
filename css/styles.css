@@ -281,3 +281,1173 @@ footer{
 
 }
 
+/* ========================================
+   MODULO DE ASISTENTES
+======================================== */
+
+.form-asistente {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.campo label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.campo input,
+.campo textarea {
+    width: 100%;
+    padding: 15px 16px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+
+    font-family: inherit;
+    font-size: 16px;
+
+    background: var(--blanco);
+    color: var(--texto);
+
+    outline: none;
+
+    transition:
+        border-color .2s,
+        box-shadow .2s;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+.campo textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+
+/* Encabezado del formulario */
+
+.form-header {
+    margin-bottom: 28px;
+}
+
+.form-header h2 {
+    margin-bottom: 6px;
+}
+
+.form-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* Pantalla de registro exitoso */
+
+.registro-exitoso {
+    width: 100%;
+    max-width: 430px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.icono-exito {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    font-size: 34px;
+}
+
+.registro-exitoso h2 {
+    margin-bottom: 5px;
+}
+
+.registro-exitoso .id-label {
+    margin-top: 18px;
+
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.registro-exitoso .id-asistente {
+    margin-top: 3px;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: var(--azul);
+}
+
+
+/* QR */
+
+.qr-container {
+    margin: 24px auto;
+
+    width: fit-content;
+
+    padding: 15px;
+
+    background: white;
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.qr-container img {
+    display: block;
+
+    width: 210px;
+    height: 210px;
+
+    max-width: 100%;
+}
+
+
+/* Botones de la confirmación */
+
+.acciones-registro {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.acciones-registro .boton {
+    margin-bottom: 0;
+}
+
+
+/* Estado de carga */
+
+.boton:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* Ajustes para celular */
+
+@media (max-width: 600px) {
+
+    .app-content {
+        padding: 16px;
+    }
+
+    .app-card {
+        padding: 24px 20px;
+    }
+
+    .qr-container img {
+        width: 190px;
+        height: 190px;
+    }
+
+
+
+
+}
+
+/* ========================================
+   BUSQUEDA DE ASISTENTES
+======================================== */
+
+.busqueda-contenedor {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+#resultadoBusqueda {
+    width: 100%;
+    max-width: 720px;
+
+    margin: 28px auto 0;
+}
+
+
+/* Ficha encontrada */
+
+.resultado-asistente {
+    padding-top: 28px;
+
+    border-top: 1px solid #e5e7eb;
+
+    text-align: center;
+}
+
+.resultado-icono {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eff6ff;
+
+    border-radius: 50%;
+
+    font-size: 30px;
+}
+
+.resultado-asistente h2 {
+    margin: 0;
+
+    font-size: 24px;
+}
+
+.resultado-id {
+    display: inline-block;
+
+    margin-top: 8px;
+    padding: 6px 14px;
+
+    border-radius: 20px;
+
+    background: #eff6ff;
+    color: var(--azul);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* Datos principales */
+
+.datos-asistente {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 24px;
+}
+
+.datos-asistente > div {
+    padding: 16px;
+
+    background: #f9fafb;
+
+    border: 1px solid #f1f5f9;
+    border-radius: 14px;
+
+    text-align: left;
+}
+
+.datos-asistente span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+.datos-asistente strong {
+    font-size: 16px;
+}
+
+
+/* Estado del asistente */
+
+.estado-asistente {
+    margin-top: 28px;
+
+    text-align: left;
+}
+
+.estado-asistente h3 {
+    margin-bottom: 8px;
+
+    font-size: 17px;
+}
+
+.estado-servicio {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 56px;
+
+    padding: 14px 4px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.estado-servicio:last-child {
+    border-bottom: none;
+}
+
+.estado-nombre {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+.estado-nombre span {
+    font-size: 20px;
+}
+
+.estado-indicador {
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.estado-ok {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.estado-pendiente {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+
+/* Mensajes de búsqueda */
+
+.mensaje-busqueda {
+    margin-top: 25px;
+    padding: 18px;
+
+    border-radius: 14px;
+
+    text-align: center;
+}
+
+.mensaje-busqueda p {
+    margin-top: 5px;
+}
+
+.error-busqueda {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+
+/* ========================================
+   BUSQUEDA - CELULAR
+======================================== */
+
+@media (max-width: 600px) {
+
+    #resultadoBusqueda {
+        margin-top: 22px;
+    }
+
+    .resultado-asistente {
+        padding-top: 22px;
+    }
+
+    .resultado-icono {
+        width: 56px;
+        height: 56px;
+
+        font-size: 26px;
+    }
+
+    .resultado-asistente h2 {
+        font-size: 22px;
+    }
+
+    .datos-asistente {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .datos-asistente > div {
+        padding: 12px;
+    }
+
+    .datos-asistente strong {
+        font-size: 14px;
+    }
+
+    .estado-servicio {
+        padding: 13px 2px;
+    }
+
+}
+
+/* ========================================
+   LISTA DE ASISTENTES
+======================================== */
+
+.lista-card {
+    width: 100%;
+    max-width: 760px;
+
+    margin: 0 auto;
+}
+
+
+/* Buscador */
+
+.buscador-lista {
+    margin-bottom: 12px;
+}
+
+
+/* Contador */
+
+.lista-resumen {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 14px 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* Contenedor de asistentes */
+
+#contenedorLista {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* Tarjeta individual */
+
+.lista-asistente-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 14px;
+
+    background: var(--blanco);
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    font-family: inherit;
+    color: var(--texto);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s,
+        border-color .15s,
+        box-shadow .15s;
+}
+
+
+.lista-asistente-item:hover {
+    border-color: #bfdbfe;
+
+    box-shadow:
+        0 5px 16px rgba(37, 99, 235, .08);
+
+    transform: translateY(-1px);
+}
+
+
+.lista-asistente-item:active {
+    transform: scale(.99);
+}
+
+
+/* Avatar */
+
+.lista-avatar {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eff6ff;
+
+    border-radius: 50%;
+
+    font-size: 22px;
+}
+
+
+/* Información */
+
+.lista-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.lista-nombre {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 16px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.lista-id {
+    margin-bottom: 5px;
+
+    color: var(--azul);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.lista-detalles {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+/* Flecha */
+
+.lista-flecha {
+    flex-shrink: 0;
+
+    color: #9ca3af;
+
+    font-size: 30px;
+    font-weight: 300;
+}
+
+
+/* ========================================
+   PAGINACION
+======================================== */
+
+#paginacionLista {
+    margin-top: 20px;
+}
+
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 10px 0;
+}
+
+
+.paginacion span {
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+
+.paginacion strong {
+    color: var(--texto);
+}
+
+
+.paginacion button {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #eff6ff;
+    color: var(--azul);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: .15s;
+}
+
+
+.paginacion button:hover:not(:disabled) {
+    background: var(--azul);
+    color: white;
+}
+
+
+.paginacion button:disabled {
+    background: #f3f4f6;
+    color: #d1d5db;
+
+    cursor: default;
+}
+
+
+/* ========================================
+   LISTA VACIA / CARGANDO
+======================================== */
+
+.lista-cargando {
+    padding: 35px 15px;
+
+    text-align: center;
+
+    color: #6b7280;
+}
+
+
+.lista-vacia {
+    padding: 35px 15px;
+
+    text-align: center;
+
+    color: #6b7280;
+}
+
+
+.lista-vacia > div {
+    margin-bottom: 10px;
+
+    font-size: 34px;
+}
+
+
+.lista-vacia strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--texto);
+}
+
+
+/* ========================================
+   LISTA - CELULAR
+======================================== */
+
+@media (max-width: 600px) {
+
+    .lista-card {
+        padding: 20px 14px;
+    }
+
+
+    .lista-asistente-item {
+        padding: 12px;
+
+        gap: 11px;
+    }
+
+
+    .lista-avatar {
+        width: 42px;
+        height: 42px;
+
+        font-size: 20px;
+    }
+
+
+    .lista-nombre {
+        font-size: 15px;
+    }
+
+
+    .lista-id {
+        font-size: 12px;
+    }
+
+
+    .lista-detalles {
+        font-size: 11px;
+    }
+
+
+    .lista-flecha {
+        font-size: 26px;
+    }
+
+
+    .paginacion {
+        gap: 12px;
+    }
+
+}
+
+/* ========================================
+   MODO OPERADOR
+======================================== */
+
+.operador-card {
+    width: 100%;
+    max-width: 520px;
+
+    margin: 0 auto;
+}
+
+
+/* Encabezado */
+
+.operador-header {
+    margin-bottom: 26px;
+}
+
+.operador-header h2 {
+    margin-bottom: 6px;
+
+    font-size: 24px;
+}
+
+.operador-header p {
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   SELECCION DE SERVICIO
+======================================== */
+
+.servicios-operador {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    margin-bottom: 25px;
+}
+
+
+.servicio-operador {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 20px 18px;
+
+    background: white;
+
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+
+    font-family: inherit;
+    color: var(--texto);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s,
+        box-shadow .15s,
+        border-color .15s;
+}
+
+
+.servicio-operador:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.08);
+}
+
+
+.servicio-operador:active {
+    transform: scale(.98);
+}
+
+
+.servicio-icono {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 27px;
+}
+
+
+.servicio-operador > div {
+    flex: 1;
+}
+
+
+.servicio-operador strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 18px;
+}
+
+
+.servicio-operador small {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+.servicio-flecha {
+    color: #9ca3af;
+
+    font-size: 30px;
+}
+
+
+/* Colores según servicio */
+
+.servicio-operador.entrada {
+    border-left: 5px solid var(--color-entrada);
+}
+
+.servicio-operador.entrada .servicio-icono {
+    background: #eff6ff;
+}
+
+
+.servicio-operador.comida {
+    border-left: 5px solid var(--color-comida);
+}
+
+.servicio-operador.comida .servicio-icono {
+    background: #fffbeb;
+}
+
+
+.servicio-operador.snack {
+    border-left: 5px solid var(--color-snack);
+}
+
+.servicio-operador.snack .servicio-icono {
+    background: #ecfdf5;
+}
+
+
+/* ========================================
+   PANTALLA DEL SERVICIO
+======================================== */
+
+.operador-servicio-header {
+    margin-bottom: 22px;
+
+    text-align: center;
+}
+
+
+.operador-servicio-icono {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 10px;
+
+    background: #f3f4f6;
+
+    border-radius: 50%;
+
+    font-size: 30px;
+}
+
+
+.operador-servicio-header h2 {
+    margin-bottom: 4px;
+
+    font-size: 24px;
+}
+
+
+.operador-servicio-header p {
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   ZONA DEL SCANNER
+======================================== */
+
+.zona-scanner {
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    padding: 18px;
+
+    background: #111827;
+
+    border-radius: 18px;
+
+    color: white;
+}
+
+
+.scanner-placeholder {
+    min-height: 190px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+.scanner-icono {
+    margin-bottom: 8px;
+
+    font-size: 42px;
+}
+
+
+.scanner-placeholder strong {
+    font-size: 17px;
+}
+
+
+.scanner-placeholder p {
+    margin-top: 4px;
+
+    color: #d1d5db;
+
+    font-size: 12px;
+}
+
+
+/* ========================================
+   PRUEBA MANUAL
+======================================== */
+
+.operador-prueba {
+    margin-bottom: 20px;
+}
+
+
+.operador-prueba > p {
+    margin-bottom: 8px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ========================================
+   RESULTADO OPERADOR
+======================================== */
+
+#resultadoOperador {
+    margin-bottom: 18px;
+}
+
+
+.resultado-operador {
+    padding: 22px 18px;
+
+    border-radius: 16px;
+
+    text-align: center;
+}
+
+
+.resultado-operador-icono {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 10px;
+
+    border-radius: 50%;
+
+    font-size: 26px;
+    font-weight: 700;
+}
+
+
+.resultado-operador h2 {
+    margin-bottom: 6px;
+
+    font-size: 20px;
+}
+
+
+.resultado-operador strong {
+    display: block;
+
+    font-size: 14px;
+}
+
+
+.resultado-operador-ok {
+    background: #f0fdf4;
+
+    color: #166534;
+
+    border: 1px solid #bbf7d0;
+}
+
+
+.resultado-operador-ok
+.resultado-operador-icono {
+    background: #dcfce7;
+
+    color: #15803d;
+}
+
+
+.resultado-operador-alerta {
+    background: #fffbeb;
+
+    color: #92400e;
+
+    border: 1px solid #fde68a;
+}
+
+
+.resultado-operador-alerta
+.resultado-operador-icono {
+    background: #fef3c7;
+
+    color: #d97706;
+}
+
+
+.resultado-operador-error {
+    background: #fef2f2;
+
+    color: #991b1b;
+
+    border: 1px solid #fecaca;
+}
+
+
+.operador-procesando {
+    padding: 18px;
+
+    text-align: center;
+
+    color: #6b7280;
+}
+
+
+/* ========================================
+   OPERADOR - CELULAR
+======================================== */
+
+@media (max-width: 600px) {
+
+    .operador-card {
+        padding: 22px 18px;
+    }
+
+
+    .servicio-operador {
+        padding: 17px 14px;
+    }
+
+
+    .servicio-icono {
+        width: 48px;
+        height: 48px;
+
+        font-size: 25px;
+    }
+
+
+    .servicio-operador strong {
+        font-size: 17px;
+    }
+
+
+    .scanner-placeholder {
+        min-height: 175px;
+    }
+
+}
+
