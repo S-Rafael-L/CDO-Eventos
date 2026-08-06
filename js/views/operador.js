@@ -394,10 +394,19 @@ document
 
 }
 
+let registroOperadorEnProceso = false;
+
 async function procesarRegistroOperador(
     tipo,
     id
 ) {
+
+if (registroOperadorEnProceso) {
+    return;
+}
+
+registroOperadorEnProceso = true;
+
 
     const resultado =
         document.getElementById(
@@ -443,6 +452,38 @@ async function procesarRegistroOperador(
             tipo
         );
 
+setTimeout(() => {
+
+    const resultadoActual =
+        document.getElementById(
+            "resultadoOperador"
+        );
+
+    const input =
+        document.getElementById(
+            "idPruebaOperador"
+        );
+
+
+    if (resultadoActual) {
+
+        resultadoActual.innerHTML = "";
+
+    }
+
+
+    if (input) {
+
+        input.value = "";
+
+    }
+
+
+    registroOperadorEnProceso = false;
+
+}, 3000);
+
+
 
     } catch (error) {
 
@@ -473,18 +514,20 @@ async function procesarRegistroOperador(
         `;
 
 
-    } finally {
+} finally {
 
-        if (boton) {
+    if (boton) {
 
-            boton.disabled = false;
+        boton.disabled = false;
 
-            boton.textContent =
-                "Registrar ID";
-
-        }
+        boton.textContent =
+            "Registrar ID";
 
     }
+
+
+
+}
 
 }
 

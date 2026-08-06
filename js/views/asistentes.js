@@ -51,9 +51,23 @@ function mostrarAsistentes() {
 
             <nav class="bottom-nav">
 
-                <button class="nav-item">👥</button>
-                <button class="nav-item">📊</button>
-                <button class="nav-item">⚙️</button>
+<button
+    id="navAsistentes"
+    class="nav-item nav-activo">
+    👥
+</button>
+
+<button
+    id="navDashboard"
+    class="nav-item">
+    📊
+</button>
+
+<button
+    id="navConfiguracion"
+    class="nav-item">
+    ⚙️
+</button>
 
             </nav>
 
@@ -77,6 +91,20 @@ function mostrarAsistentes() {
     .addEventListener(
         "click",
         mostrarListaAsistentes
+    );
+
+    document
+    .getElementById("navDashboard")
+    .addEventListener(
+        "click",
+        mostrarDashboard
+    );
+
+    document
+    .getElementById("navConfiguracion")
+    .addEventListener(
+        "click",
+        mostrarConfiguracion
     );
 
 }
