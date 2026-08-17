@@ -25,6 +25,32 @@ async function registrarAsistenteAPI(datos) {
 
 }
 
+async function registrarAbonoAPI(id, monto) {
+
+    const respuesta = await fetch(API_URL, {
+
+        method: "POST",
+
+        body: JSON.stringify({
+            accion: "registrarAbono",
+            id: id,
+            monto: monto
+        })
+
+    });
+
+    if (!respuesta.ok) {
+
+        throw new Error(
+            `Error de comunicación: ${respuesta.status}`
+        );
+
+    }
+
+    return await respuesta.json();
+
+}
+
 async function buscarAsistenteAPI(id) {
 
     const respuesta = await fetch(API_URL, {

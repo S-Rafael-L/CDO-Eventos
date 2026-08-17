@@ -30,13 +30,18 @@ function mostrarInicio() {
         </main>
     `;
 
-    document
-        .getElementById("btnAdministrador")
-        .addEventListener("click", () => {
+document
+    .getElementById("btnAdministrador")
+    .addEventListener("click", () => {
+
+        if (solicitarAccesoAdministrador()) {
 
             cargarVista("asistentes");
 
-        });
+        }
+
+});
+
 
     document
         .getElementById("btnOperador")

@@ -466,7 +466,6 @@ function escaparHTML(valor) {
 
 }
 
-
 async function compartirQR(asistente) {
 
     const texto =
@@ -865,10 +864,250 @@ function mostrarResultadoAsistente(asistente) {
 
             </div>
 
+
+            <div class="pago-asistente">
+
+                <h3>💰 Pago del evento</h3>
+
+                <div class="datos-pago">
+
+                    <div>
+                        <span>Costo</span>
+                        <strong>$400</strong>
+                    </div>
+
+                    <div>
+                        <span>Pagado</span>
+                        <strong>
+                            $${Number(asistente.pagado || 0).toFixed(2)}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Saldo</span>
+                        <strong>
+                            $${Math.max(
+                                0,
+                                400 - Number(asistente.pagado || 0)
+                            ).toFixed(2)}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="btnAbonar"
+                    class="boton principal"
+                    type="button"
+                >
+                    💵 Registrar abono
+                </button>
+
+                <button
+                     id="btnEnviarQR"
+                    class="boton"
+                    type="button"
+                >
+                     📲 Enviar QR
+                </button>
+
+            </div>
+
+
         </div>
 
     `;
 
+
+    // -------------------------
+    // BOTÓN REGISTRAR ABONO
+    // -------------------------
+
+    document
+        .getElementById("btnAbonar")
+        .addEventListener(
+            "click",
+            async () => {
+
+                const pagadoActual =
+                    Number(asistente.pagado || 0);
+
+                const costoEvento = 400;
+
+                const saldo =
+                    Math.max(
+                        0,
+                        costoEvento - pagadoActual
+                    );
+
+
+                if (saldo <= 0) {
+
+                    alert(
+                        "Este asistente ya tiene el pago completo."
+                    );
+
+                    return;
+
+                }
+
+
+                const montoTexto =
+                    prompt(
+                        "¿Cuánto deseas abonar?\n\n" +
+                        "Saldo pendiente: $" +
+                        saldo.toFixed(2)
+                    );
+
+
+                if (
+                    montoTexto === null ||
+                    montoTexto.trim() === ""
+                ) {
+                    return;
+                }
+
+
+                const monto =
+                    Number(
+                        montoTexto.replace(",", ".")
+                    );
+
+
+                if (
+                    !Number.isFinite(monto) ||
+                    monto <= 0
+                ) {
+
+                    alert(
+                        "Ingresa un monto válido."
+                    );
+
+                    return;
+
+                }
+
+
+                if (monto > saldo) {
+
+                    alert(
+                        "El abono no puede ser mayor al saldo pendiente de $" +
+                        saldo.toFixed(2) +
+                        "."
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const resultado =
+                        await registrarAbonoAPI(
+                            asistente.id,
+                            monto
+                        );
+
+
+                    if (!resultado.ok) {
+
+                        throw new Error(
+                            resultado.mensaje ||
+                            "No fue posible registrar el abono."
+                        );
+
+                    }
+
+
+                    alert(
+                        "Abono registrado correctamente."
+                    );
+
+
+                    // Actualizar los datos mostrados
+                    asistente.pagado =
+                        resultado.pagado;
+
+
+                    mostrarResultadoAsistente(
+                        asistente
+                    );
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "No fue posible registrar el abono.\n\n" +
+                        error.message
+                    );
+
+                }
+
+            }
+        );
+
+   document
+    .getElementById("btnEnviarQR")
+    .addEventListener(
+        "click",
+        () => {
+
+            const telefono =
+                String(
+                    asistente.telefono || ""
+                )
+                .replace(/\D/g, "");
+
+
+            if (!telefono) {
+
+                alert(
+                    "Este asistente no tiene un teléfono registrado."
+                );
+
+                return;
+
+            }
+
+
+            const qr =
+                "https://quickchart.io/qr?text=" +
+                encodeURIComponent(asistente.id) +
+                "&size=500";
+
+
+            const mensaje =
+                "Hola " +
+                asistente.nombre +
+                " 👋\n\n" +
+                "Este es tu registro para Sin Cadenas 2026.\n\n" +
+                "🆔 ID: " +
+                asistente.id +
+                "\n\n" +
+                "📲 Tu código QR:\n" +
+                qr;
+
+
+            const url =
+                "https://wa.me/" +
+                telefono +
+                "?text=" +
+                encodeURIComponent(mensaje);
+
+
+            window.open(
+                url,
+                "_blank"
+            );
+
+        }
+    );     
+
+    
 }
 
 function crearEstadoServicio(

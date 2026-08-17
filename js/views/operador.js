@@ -155,12 +155,15 @@ function mostrarOperador() {
                 "click",
                 () => {
 
-                    const tipo =
-                        boton.dataset.tipo;
+                const tipo = boton.dataset.tipo;
 
-                    abrirServicioOperador(
-                        tipo
-                    );
+                if (solicitarClaveServicio(tipo)) {
+
+                abrirServicioOperador(
+                tipo
+                );
+
+                }
 
                 }
             );
