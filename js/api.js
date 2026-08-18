@@ -51,6 +51,33 @@ async function registrarAbonoAPI(id, monto) {
 
 }
 
+async function obtenerHistorialPagosAPI(id) {
+
+    const respuesta = await fetch(API_URL, {
+
+        method: "POST",
+
+        body: JSON.stringify({
+            accion: "obtenerHistorialPagos",
+            id: id
+        })
+
+    });
+
+
+    if (!respuesta.ok) {
+
+        throw new Error(
+            `Error de comunicación: ${respuesta.status}`
+        );
+
+    }
+
+
+    return await respuesta.json();
+
+}
+
 async function buscarAsistenteAPI(id) {
 
     const respuesta = await fetch(API_URL, {

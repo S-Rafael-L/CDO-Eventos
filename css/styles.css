@@ -2003,3 +2003,105 @@ footer{
 
 }
 
+/* =========================
+   HISTORIAL DE PAGOS
+   ========================= */
+
+.historial-pagos {
+    margin-top: 10px;
+    padding-top: 4px;
+    text-align: center;
+}
+
+.historial-pagos h4 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.historial-cargando {
+    font-size: 11px;
+    color: #777;
+    padding: 6px 0;
+}
+
+/* =========================
+   LISTA DE PAGOS
+   ========================= */
+
+.lista-historial-pagos {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* -------------------------
+   TARJETA DE CADA ABONO
+   ------------------------- */
+
+.historial-pago {
+    padding: 9px 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+/* -------------------------
+   FECHA
+   ------------------------- */
+
+.historial-pago-fecha {
+    margin-bottom: 6px;
+    font-size: 10px;
+    color: #777;
+    text-align: left;
+}
+
+/* -------------------------
+   DATOS DEL ABONO
+   ------------------------- */
+
+.historial-pago-datos {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.historial-pago-datos > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+}
+
+.historial-pago-datos span {
+    font-size: 10px;
+    color: #777;
+}
+
+.historial-pago-datos strong {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* -------------------------
+   SIN PAGOS
+   ------------------------- */
+
+.historial-vacio {
+    padding: 7px 0;
+    font-size: 10px;
+    color: #777;
+}
+
+/* -------------------------
+   ERROR
+   ------------------------- */
+
+.historial-error {
+    padding: 7px 0;
+    font-size: 10px;
+    color: #b00020;
+}
+

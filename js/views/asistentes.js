@@ -21,13 +21,7 @@ function mostrarAsistentes() {
 
                     <br>
 
-                    <button
-                        id="btnBuscarAsistente"
-                        class="boton">
 
-                        🔍 Buscar asistente
-
-                    </button>
 
                     <button
                         id="btnListaAsistentes"
@@ -79,12 +73,7 @@ function mostrarAsistentes() {
         .getElementById("btnNuevoAsistente")
         .addEventListener("click", mostrarFormularioAsistente);
 
-        document
-    .getElementById("btnBuscarAsistente")
-    .addEventListener(
-        "click",
-        mostrarBuscarAsistente
-    );
+
 
     document
     .getElementById("btnListaAsistentes")
@@ -211,6 +200,23 @@ function mostrarFormularioAsistente() {
 
                         </div>
 
+                        <div class="campo">
+
+                         <label for="abonoInicial">
+                            Abono inicial
+                             </label>
+
+                             <input
+                               id="abonoInicial"
+                              type="number"
+                               min="0"
+                               max="400"
+                              step="0.01"
+                              inputmode="decimal"
+                              placeholder="Costo $400"
+    >
+
+</div>
 
                         <button
                             id="btnGuardar"
@@ -264,21 +270,24 @@ async function guardarNuevoAsistente(evento) {
 
     const boton = document.getElementById("btnGuardar");
 
-    const datos = {
+const datos = {
 
-        nombre:
-            document.getElementById("nombre").value.trim(),
+    nombre:
+        document.getElementById("nombre").value.trim(),
 
-        telefono:
-            document.getElementById("telefono").value.trim(),
+    telefono:
+        document.getElementById("telefono").value.trim(),
 
-        edad:
-            document.getElementById("edad").value.trim(),
+    edad:
+        document.getElementById("edad").value.trim(),
 
-        observaciones:
-            document.getElementById("observaciones").value.trim()
+    observaciones:
+        document.getElementById("observaciones").value.trim(),
 
-    };
+    abonoInicial:
+        document.getElementById("abonoInicial").value.trim()
+
+};
 
 
     if (!datos.nombre) {
@@ -895,6 +904,18 @@ function mostrarResultadoAsistente(asistente) {
 
                 </div>
 
+         <div
+             id="historialPagos"
+             class="historial-pagos"
+         >
+
+          <h4>📋 Historial de pagos</h4>
+
+          <div class="historial-cargando">
+             Cargando historial...
+          </div>
+
+        </div>
 
                 <button
                     id="btnAbonar"
@@ -1107,8 +1128,171 @@ function mostrarResultadoAsistente(asistente) {
         }
     );     
 
-    
+        // -------------------------
+    // CARGAR HISTORIAL DE PAGOS
+    // -------------------------
+
+    cargarHistorialPagos(asistente.id);
+
 }
+
+async function cargarHistorialPagos(id) {
+
+    const contenedor =
+        document.getElementById("historialPagos");
+
+
+    if (!contenedor) {
+        return;
+    }
+
+
+    try {
+
+        const resultado =
+            await obtenerHistorialPagosAPI(id);
+
+
+        if (!resultado.ok) {
+
+            throw new Error(
+                resultado.mensaje ||
+                "No fue posible cargar el historial."
+            );
+
+        }
+
+
+        const pagos =
+            resultado.pagos || [];
+
+
+        if (pagos.length === 0) {
+
+            contenedor.innerHTML = `
+
+                <h4>📋 Historial de pagos</h4>
+
+                <div class="historial-vacio">
+
+                    Sin pagos registrados.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        contenedor.innerHTML = `
+
+            <h4>📋 Historial de pagos</h4>
+
+            <div class="lista-historial-pagos">
+
+                ${pagos.map(pago => `
+
+                    <div class="historial-pago">
+
+                        <div class="historial-pago-fecha">
+
+                            ${formatearFechaPago(
+                                pago.fecha
+                            )}
+
+                        </div>
+
+
+                        <div class="historial-pago-datos">
+
+                            <div>
+
+                                <span>Abono</span>
+
+                                <strong>
+                                    $${Number(
+                                        pago.abono || 0
+                                    ).toFixed(2)}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>Acumulado</span>
+
+                                <strong>
+                                    $${Number(
+                                        pago.pagado || 0
+                                    ).toFixed(2)}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        contenedor.innerHTML = `
+
+            <h4>📋 Historial de pagos</h4>
+
+            <div class="historial-error">
+
+                No fue posible cargar el historial.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+function formatearFechaPago(fecha) {
+
+    if (!fecha) {
+        return "Fecha no disponible";
+    }
+
+
+    const fechaObjeto =
+        new Date(fecha);
+
+
+    if (Number.isNaN(fechaObjeto.getTime())) {
+        return "Fecha no disponible";
+    }
+
+
+    return fechaObjeto.toLocaleString(
+        "es-MX",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
 
 function crearEstadoServicio(
     icono,
