@@ -6,9 +6,8 @@ function mostrarAsistentes() {
 
         <div class="app">
 
-            <header class="app-header">
+            <header class="app-header solo-logo">
 
-                <h1>👋 Hola, Servidor</h1>
                 <p>Sin Cadenas 2026</p>
 
             </header>
@@ -106,9 +105,8 @@ function mostrarFormularioAsistente() {
 
         <div class="app">
 
-            <header class="app-header">
+            <header class="app-header solo-logo">
 
-                <h1>👋 Hola, Servidor</h1>
                 <p>Sin Cadenas 2026</p>
 
             </header>
@@ -346,9 +344,8 @@ function mostrarRegistroExitoso(asistente) {
 
         <div class="app">
 
-            <header class="app-header">
+            <header class="app-header solo-logo">
 
-                <h1>👋 Hola, Servidor</h1>
                 <p>Sin Cadenas 2026</p>
 
             </header>
@@ -411,6 +408,12 @@ function mostrarRegistroExitoso(asistente) {
                             📤 Compartir QR
                         </button>
 
+                        <button
+                            id="btnEnviarQR"
+                            class="boton"
+                        >
+                            📲 Enviar QR
+                        </button>
 
                         <button
                             id="btnRegistrarOtro"
@@ -461,6 +464,57 @@ function mostrarRegistroExitoso(asistente) {
             compartirQR(asistente);
 
         });
+
+    document
+    .getElementById("btnEnviarQR")
+    .addEventListener("click", () => {
+
+        const telefono =
+            String(
+                asistente.telefono || ""
+            )
+            .replace(/\D/g, "");
+
+        if (!telefono) {
+
+            alert(
+                "Este asistente no tiene un teléfono registrado."
+            );
+
+            return;
+        }
+
+        const qr =
+            "https://quickchart.io/qr?text=" +
+            encodeURIComponent(asistente.id) +
+            "&size=500";
+
+        const mensaje =
+            "Hola " +
+            asistente.nombre +
+            " 👋\n\n" +
+            "Este es tu registro para Sin Cadenas 2026.\n\n" +
+            "🆔 ID: " +
+            asistente.id +
+            "\n\n" +
+            "📲 Tu código QR:\n" +
+            qr +
+            "\n\n" +
+            "💾 Guarda también la imagen de tu QR en tu teléfono para utilizarla el día del evento.";
+
+        const url =
+            "https://wa.me/" +
+            telefono +
+            "?text=" +
+            encodeURIComponent(mensaje);
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    });
+
 
 }
 
@@ -594,9 +648,8 @@ function mostrarBuscarAsistente() {
 
         <div class="app">
 
-            <header class="app-header">
+            <header class="app-header solo-logo">
 
-                <h1>👋 Hola, Servidor</h1>
                 <p>Sin Cadenas 2026</p>
 
             </header>
@@ -924,6 +977,22 @@ function mostrarResultadoAsistente(asistente) {
                 >
                     💵 Registrar abono
                 </button>
+                
+                <button
+                    id="btnEnviarHistorial"
+                    class="boton"
+                    type="button"
+                >
+                    🧾 Enviar historial
+                </button>
+
+                <button
+                    id="btnCompartirQR"
+                    class="boton"
+                    type="button"
+                >
+                    📤 Compartir QR
+                </button>
 
                 <button
                      id="btnEnviarQR"
@@ -1071,6 +1140,132 @@ function mostrarResultadoAsistente(asistente) {
             }
         );
 
+        document
+    .getElementById("btnEnviarHistorial")
+    .addEventListener(
+        "click",
+        async () => {
+
+            const telefono =
+                String(
+                    asistente.telefono || ""
+                )
+                .replace(/\D/g, "");
+
+            if (!telefono) {
+
+                alert(
+                    "Este asistente no tiene un teléfono registrado."
+                );
+
+                return;
+            }
+
+            try {
+
+                const resultado =
+                    await obtenerHistorialPagosAPI(
+                        asistente.id
+                    );
+
+                if (!resultado.ok) {
+
+                    throw new Error(
+                        resultado.mensaje ||
+                        "No fue posible obtener el historial."
+                    );
+
+                }
+
+                const pagos =
+                    resultado.pagos || [];
+
+                const costoEvento = 400;
+
+                const totalPagado =
+                    Number(
+                        asistente.pagado || 0
+                    );
+
+                const saldo =
+                    Math.max(
+                        0,
+                        costoEvento - totalPagado
+                    );
+
+                let mensaje =
+                    "Hola " +
+                    asistente.nombre +
+                    " 👋\n\n" +
+                    "Este es tu historial de pagos de Sin Cadenas 2026.\n\n" +
+                    "🆔 ID: " +
+                    asistente.id +
+                    "\n\n" +
+                    "💰 Costo del evento: $" +
+                    costoEvento.toFixed(2) +
+                    "\n\n" +
+                    "📋 Pagos realizados:\n\n";
+
+                if (pagos.length === 0) {
+
+                    mensaje +=
+                        "📋 No hay abonos registrados actualmente.\n\n";
+
+                } else {
+
+                    pagos.forEach(pago => {
+
+                        mensaje +=
+                            "• " +
+                            formatearFechaPago(
+                                pago.fecha
+                            ) +
+                            " — Abono: $" +
+                            Number(
+                                pago.abono || 0
+                            ).toFixed(2) +
+                            "\n";
+
+                    });
+
+                    mensaje += "\n";
+                }
+
+                mensaje +=
+                    "✅ Total pagado: $" +
+                    totalPagado.toFixed(2) +
+                    "\n" +
+                    "💳 Saldo pendiente: $" +
+                    saldo.toFixed(2) +
+                    "\n\n" +
+                    "Gracias por tu participación en Sin Cadenas 2026.";
+
+                const url =
+                    "https://wa.me/" +
+                    telefono +
+                    "?text=" +
+                    encodeURIComponent(mensaje);
+
+                window.open(
+                    url,
+                    "_blank"
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "No fue posible enviar el historial.\n\n" +
+                    error.message
+                );
+
+            }
+
+        }
+    );
+
+    
    document
     .getElementById("btnEnviarQR")
     .addEventListener(
@@ -1110,8 +1305,9 @@ function mostrarResultadoAsistente(asistente) {
                 asistente.id +
                 "\n\n" +
                 "📲 Tu código QR:\n" +
-                qr;
-
+                qr +
+                "\n\n" +
+                "💾 Guarda también la imagen de tu QR en tu teléfono para utilizarla el día del evento.";
 
             const url =
                 "https://wa.me/" +
@@ -1126,7 +1322,16 @@ function mostrarResultadoAsistente(asistente) {
             );
 
         }
-    );     
+    );
+    
+    document
+    .getElementById("btnCompartirQR")
+    .addEventListener(
+        "click",
+        () => {
+            compartirQR(asistente);
+        }
+    );
 
         // -------------------------
     // CARGAR HISTORIAL DE PAGOS
@@ -1355,9 +1560,8 @@ async function mostrarListaAsistentes() {
 
         <div class="app">
 
-            <header class="app-header">
+            <header class="app-header solo-logo">
 
-                <h1>👋 Hola, Servidor</h1>
                 <p>Sin Cadenas 2026</p>
 
             </header>
@@ -1816,9 +2020,8 @@ function mostrarDetalleDesdeLista(
 
         <div class="app">
 
-            <header class="app-header">
+            <header class="app-header solo-logo">
 
-                <h1>👋 Hola, Servidor</h1>
                 <p>Sin Cadenas 2026</p>
 
             </header>
