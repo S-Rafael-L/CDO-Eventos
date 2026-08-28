@@ -759,6 +759,29 @@ footer{
 }
 
 
+/* Acciones de la lista */
+
+.lista-acciones {
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.lista-acciones-inferiores {
+    margin: 20px 0 0;
+}
+
+.lista-accion {
+    flex: 1;
+
+    margin: 0;
+    padding: 11px 12px;
+
+    font-size: 14px;
+}
+
+
 /* Buscador */
 
 .buscador-lista {
@@ -1028,6 +1051,15 @@ footer{
 
     .lista-card {
         padding: 20px 14px;
+    }
+
+    .lista-acciones {
+        gap: 8px;
+    }
+
+    .lista-accion {
+        padding: 10px 8px;
+        font-size: 13px;
     }
 
 

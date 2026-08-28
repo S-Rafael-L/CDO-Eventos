@@ -416,6 +416,13 @@ function mostrarRegistroExitoso(asistente) {
                         </button>
 
                         <button
+                            id="btnEnviarHistorial"
+                            class="boton"
+                        >
+                            🧾 Enviar historial
+                        </button>
+
+                        <button
                             id="btnRegistrarOtro"
                             class="boton"
                         >
@@ -515,6 +522,95 @@ function mostrarRegistroExitoso(asistente) {
 
     });
 
+    document
+    .getElementById("btnEnviarHistorial")
+    .addEventListener("click", () => {
+
+        enviarHistorialPorWhatsApp(asistente);
+
+    });
+
+
+}
+
+async function enviarHistorialPorWhatsApp(asistente) {
+
+    const telefono =
+        String(asistente.telefono || "")
+        .replace(/\D/g, "");
+
+    if (!telefono) {
+
+        alert("Este asistente no tiene un teléfono registrado.");
+
+        return;
+    }
+
+    try {
+
+        const resultado =
+            await obtenerHistorialPagosAPI(asistente.id);
+
+        if (!resultado.ok) {
+
+            throw new Error(
+                resultado.mensaje ||
+                "No fue posible obtener el historial."
+            );
+
+        }
+
+        const pagos = resultado.pagos || [];
+        const costoEvento = 400;
+        const totalPagado = Number(asistente.pagado || 0);
+        const saldo = Math.max(0, costoEvento - totalPagado);
+
+        let mensaje =
+            "Hola " + asistente.nombre + " 👋\n\n" +
+            "Este es tu historial de pagos de Sin Cadenas 2026.\n\n" +
+            "🆔 ID: " + asistente.id + "\n\n" +
+            "💰 Costo del evento: $" + costoEvento.toFixed(2) +
+            "\n\n📋 Pagos realizados:\n\n";
+
+        if (pagos.length === 0) {
+
+            mensaje += "📋 No hay abonos registrados actualmente.\n\n";
+
+        } else {
+
+            pagos.forEach(pago => {
+
+                mensaje +=
+                    "• " + formatearFechaPago(pago.fecha) +
+                    " — Abono: $" +
+                    Number(pago.abono || 0).toFixed(2) + "\n";
+
+            });
+
+            mensaje += "\n";
+        }
+
+        mensaje +=
+            "✅ Total pagado: $" + totalPagado.toFixed(2) + "\n" +
+            "💳 Saldo pendiente: $" + saldo.toFixed(2) + "\n\n" +
+            "Gracias por tu participación en Sin Cadenas 2026.";
+
+        window.open(
+            "https://wa.me/" + telefono +
+            "?text=" + encodeURIComponent(mensaje),
+            "_blank"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "No fue posible enviar el historial.\n\n" +
+            error.message
+        );
+
+    }
 
 }
 
@@ -536,10 +632,16 @@ async function compartirQR(asistente) {
         `${asistente.nombre}\n` +
         `ID: ${asistente.id}`;
 
+    const qr =
+        asistente.qr ||
+        "https://quickchart.io/qr?text=" +
+        encodeURIComponent(asistente.id) +
+        "&size=500";
+
     try {
 
         // Descargar temporalmente la imagen del QR
-        const respuesta = await fetch(asistente.qr);
+        const respuesta = await fetch(qr);
 
         if (!respuesta.ok) {
             throw new Error("No fue posible obtener el código QR.");
@@ -607,7 +709,7 @@ async function compartirQR(asistente) {
         // Último respaldo:
         // abrir el QR directamente
         window.open(
-            asistente.qr,
+            qr,
             "_blank"
         );
 
@@ -1571,6 +1673,26 @@ async function mostrarListaAsistentes() {
 
                 <div class="app-card lista-card">
 
+                    <div class="lista-acciones">
+
+                        <button
+                            class="boton lista-accion"
+                            type="button"
+                            data-lista-accion="volver"
+                        >
+                            ← Volver
+                        </button>
+
+                        <button
+                            class="boton principal lista-accion"
+                            type="button"
+                            data-lista-accion="nuevo"
+                        >
+                            ＋ Nuevo asistente
+                        </button>
+
+                    </div>
+
                     <div class="form-header">
 
                         <h2>📋 Lista de asistentes</h2>
@@ -1618,14 +1740,25 @@ async function mostrarListaAsistentes() {
 
                     <div id="paginacionLista"></div>
 
+                    <div class="lista-acciones lista-acciones-inferiores">
 
-                    <button
-                        id="btnVolverLista"
-                        class="boton"
-                        type="button"
-                    >
-                        ← Volver
-                    </button>
+                        <button
+                            class="boton lista-accion"
+                            type="button"
+                            data-lista-accion="volver"
+                        >
+                            ← Volver
+                        </button>
+
+                        <button
+                            class="boton principal lista-accion"
+                            type="button"
+                            data-lista-accion="nuevo"
+                        >
+                            ＋ Nuevo asistente
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -1637,11 +1770,21 @@ async function mostrarListaAsistentes() {
 
 
     document
-        .getElementById("btnVolverLista")
-        .addEventListener(
-            "click",
-            mostrarAsistentes
-        );
+        .querySelectorAll("[data-lista-accion]")
+        .forEach(boton => {
+
+            boton.addEventListener("click", () => {
+
+                if (boton.dataset.listaAccion === "nuevo") {
+                    mostrarFormularioAsistente();
+                    return;
+                }
+
+                mostrarAsistentes();
+
+            });
+
+        });
 
 
     document
