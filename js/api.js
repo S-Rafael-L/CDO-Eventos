@@ -166,3 +166,38 @@ async function registrarServicioAPI(
 
 }
 
+async function editarAsistenteAPI(id, datos) {
+  const respuesta = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      accion: "editarAsistente",
+      id: id,
+      datos: datos
+    })
+  });
+
+  if (!respuesta.ok) {
+    throw new Error(
+      `Error de comunicación: ${respuesta.status}`
+    );
+  }
+
+  return await respuesta.json();
+}
+async function eliminarAsistenteAPI(id) {
+  const respuesta = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      accion: "eliminarAsistente",
+      id: id
+    })
+  });
+
+  if (!respuesta.ok) {
+    throw new Error(
+      `Error de comunicación: ${respuesta.status}`
+    );
+  }
+
+  return await respuesta.json();
+}

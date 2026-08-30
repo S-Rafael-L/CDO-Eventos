@@ -109,6 +109,11 @@ h1{
 
 }
 
+.boton-peligro {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
 footer{
 
     margin-top:25px;
@@ -941,8 +946,12 @@ footer{
    PAGINACION
 ======================================== */
 
-#paginacionLista {
+.paginacion-lista {
     margin-top: 20px;
+}
+
+.paginacion-lista-superior {
+    margin: 0 0 20px;
 }
 
 

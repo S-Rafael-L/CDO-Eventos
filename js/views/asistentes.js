@@ -70,7 +70,10 @@ function mostrarAsistentes() {
 
     document
         .getElementById("btnNuevoAsistente")
-        .addEventListener("click", mostrarFormularioAsistente);
+        .addEventListener(
+            "click",
+            () => mostrarFormularioAsistente()
+        );
 
 
 
@@ -97,9 +100,11 @@ function mostrarAsistentes() {
 
 }
 
-function mostrarFormularioAsistente() {
+function mostrarFormularioAsistente(asistente = null) {
 
     const app = document.getElementById("app");
+
+    const esEdicion = Boolean(asistente);
 
     app.innerHTML = `
 
@@ -244,6 +249,43 @@ function mostrarFormularioAsistente() {
     `;
 
 
+    if (esEdicion) {
+
+        document
+            .querySelector(".form-header h2")
+            .textContent = "✏️ Editar asistente";
+
+        document
+            .querySelector(".form-header p")
+            .textContent =
+                "Actualiza sus datos y corrige el total pagado si es necesario.";
+
+        document.getElementById("nombre").value =
+            asistente.nombre || "";
+
+        document.getElementById("telefono").value =
+            asistente.telefono || "";
+
+        document.getElementById("edad").value =
+            asistente.edad || "";
+
+        document.getElementById("observaciones").value =
+            asistente.observaciones || "";
+
+        document
+            .querySelector('label[for="abonoInicial"]')
+            .textContent = "Total pagado";
+
+        document.getElementById("abonoInicial").value =
+            Number(asistente.pagado || 0).toFixed(2);
+
+        document
+            .getElementById("btnGuardar")
+            .textContent = "Guardar cambios";
+
+    }
+
+
     document
         .getElementById("btnCancelar")
         .addEventListener(
@@ -256,7 +298,12 @@ function mostrarFormularioAsistente() {
         .getElementById("formAsistente")
         .addEventListener(
             "submit",
-            guardarNuevoAsistente
+            esEdicion
+                ? evento => guardarEdicionAsistente(
+                    evento,
+                    asistente.id
+                )
+                : guardarNuevoAsistente
         );
 
 }
@@ -452,7 +499,7 @@ function mostrarRegistroExitoso(asistente) {
         .getElementById("btnRegistrarOtro")
         .addEventListener(
             "click",
-            mostrarFormularioAsistente
+            () => mostrarFormularioAsistente()
         );
 
 
@@ -530,6 +577,62 @@ function mostrarRegistroExitoso(asistente) {
 
     });
 
+
+}
+
+
+async function guardarEdicionAsistente(evento, id) {
+
+    evento.preventDefault();
+
+    const boton = document.getElementById("btnGuardar");
+
+    const datos = {
+        nombre: document.getElementById("nombre").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        edad: document.getElementById("edad").value.trim(),
+        observaciones:
+            document.getElementById("observaciones").value.trim(),
+        totalPagado:
+            document.getElementById("abonoInicial").value.trim()
+    };
+
+    if (!datos.nombre) {
+        alert("El nombre es obligatorio.");
+        return;
+    }
+
+    try {
+
+        boton.disabled = true;
+        boton.textContent = "Guardando...";
+
+        const resultado = await editarAsistenteAPI(id, datos);
+
+        if (!resultado.ok) {
+            throw new Error(
+                resultado.mensaje ||
+                "No fue posible actualizar al asistente."
+            );
+        }
+
+        alert("Datos actualizados correctamente.");
+
+        mostrarListaAsistentes();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "No fue posible actualizar al asistente.\n\n" +
+            error.message
+        );
+
+        boton.disabled = false;
+        boton.textContent = "Guardar cambios";
+
+    }
 
 }
 
@@ -1104,6 +1207,22 @@ function mostrarResultadoAsistente(asistente) {
                      📲 Enviar QR
                 </button>
 
+                <button
+                    id="btnEditarAsistente"
+                    class="boton"
+                    type="button"
+                >
+                    ✏️ Editar datos
+                </button>
+
+                <button
+                    id="btnEliminarAsistente"
+                    class="boton boton-peligro"
+                    type="button"
+                >
+                    🗑 Eliminar asistente
+                </button>
+
             </div>
 
 
@@ -1435,6 +1554,61 @@ function mostrarResultadoAsistente(asistente) {
         }
     );
 
+
+    document
+        .getElementById("btnEditarAsistente")
+        .addEventListener(
+            "click",
+            () => mostrarFormularioAsistente(asistente)
+        );
+
+
+    document
+        .getElementById("btnEliminarAsistente")
+        .addEventListener(
+            "click",
+            async () => {
+
+                const confirmar = window.confirm(
+                    "¿Eliminar a " + asistente.nombre + "?\n\n" +
+                    "También se eliminará su historial de pagos. " +
+                    "Esta acción no se puede deshacer."
+                );
+
+                if (!confirmar) {
+                    return;
+                }
+
+                try {
+
+                    const resultado =
+                        await eliminarAsistenteAPI(asistente.id);
+
+                    if (!resultado.ok) {
+                        throw new Error(
+                            resultado.mensaje ||
+                            "No fue posible eliminar al asistente."
+                        );
+                    }
+
+                    alert("Asistente eliminado correctamente.");
+
+                    mostrarListaAsistentes();
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "No fue posible eliminar al asistente.\n\n" +
+                        error.message
+                    );
+
+                }
+
+            }
+        );
+
         // -------------------------
     // CARGAR HISTORIAL DE PAGOS
     // -------------------------
@@ -1693,6 +1867,12 @@ async function mostrarListaAsistentes() {
 
                     </div>
 
+
+                    <div
+                        class="paginacion-lista paginacion-lista-superior"
+                        data-paginacion-lista
+                    ></div>
+
                     <div class="form-header">
 
                         <h2>📋 Lista de asistentes</h2>
@@ -1738,7 +1918,10 @@ async function mostrarListaAsistentes() {
                     </div>
 
 
-                    <div id="paginacionLista"></div>
+                    <div
+                        class="paginacion-lista"
+                        data-paginacion-lista
+                    ></div>
 
                     <div class="lista-acciones lista-acciones-inferiores">
 
@@ -1845,8 +2028,10 @@ function renderizarListaAsistentes() {
 
 
         document
-            .getElementById("paginacionLista")
-            .innerHTML = "";
+            .querySelectorAll("[data-paginacion-lista]")
+            .forEach(paginacion => {
+                paginacion.innerHTML = "";
+            });
 
 
         return;
@@ -2021,27 +2206,29 @@ function renderizarPaginacionLista(
     totalPaginas
 ) {
 
-    const paginacion =
-        document.getElementById(
-            "paginacionLista"
+    const paginaciones =
+        document.querySelectorAll(
+            "[data-paginacion-lista]"
         );
 
 
     if (totalPaginas <= 1) {
 
-        paginacion.innerHTML = "";
+        paginaciones.forEach(paginacion => {
+            paginacion.innerHTML = "";
+        });
 
         return;
 
     }
 
 
-    paginacion.innerHTML = `
+    const controlesPaginacion = `
 
         <div class="paginacion">
 
             <button
-                id="paginaAnterior"
+                data-cambio-pagina="-1"
                 type="button"
                 ${paginaAsistentes === 1
                     ? "disabled"
@@ -2066,7 +2253,7 @@ function renderizarPaginacionLista(
 
 
             <button
-                id="paginaSiguiente"
+                data-cambio-pagina="1"
                 type="button"
                 ${paginaAsistentes === totalPaginas
                     ? "disabled"
@@ -2080,20 +2267,24 @@ function renderizarPaginacionLista(
     `;
 
 
-    document
-        .getElementById("paginaAnterior")
-        .addEventListener(
-            "click",
-            () => cambiarPaginaLista(-1)
-        );
+    paginaciones.forEach(paginacion => {
 
+        paginacion.innerHTML = controlesPaginacion;
 
-    document
-        .getElementById("paginaSiguiente")
-        .addEventListener(
-            "click",
-            () => cambiarPaginaLista(1)
-        );
+        paginacion
+            .querySelectorAll("[data-cambio-pagina]")
+            .forEach(boton => {
+
+                boton.addEventListener(
+                    "click",
+                    () => cambiarPaginaLista(
+                        Number(boton.dataset.cambioPagina)
+                    )
+                );
+
+            });
+
+    });
 
 }
 
